@@ -1,6 +1,6 @@
-package com.github.khshourov.dsj.jobs.processors;
+package com.github.khshourov.dsj.processors;
 
-import com.github.khshourov.dsj.jobs.models.Word;
+import com.github.khshourov.dsj.models.Word;
 import javax.sql.DataSource;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.InitializingBean;

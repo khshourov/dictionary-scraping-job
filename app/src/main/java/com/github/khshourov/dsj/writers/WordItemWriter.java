@@ -1,6 +1,6 @@
-package com.github.khshourov.dsj.jobs.writers;
+package com.github.khshourov.dsj.writers;
 
-import com.github.khshourov.dsj.jobs.models.Word;
+import com.github.khshourov.dsj.models.Word;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ListIterator;

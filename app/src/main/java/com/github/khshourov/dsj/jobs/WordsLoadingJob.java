@@ -2,10 +2,10 @@ package com.github.khshourov.dsj.jobs;
 
 import com.github.khshourov.dsj.db.datasource.EmbeddedDataSourceConfiguration;
 import com.github.khshourov.dsj.db.datasource.PersistentDataSourceConfiguration;
-import com.github.khshourov.dsj.jobs.models.Word;
-import com.github.khshourov.dsj.jobs.processors.WordItemProcessor;
-import com.github.khshourov.dsj.jobs.readers.WordItemReader;
-import com.github.khshourov.dsj.jobs.writers.WordItemWriter;
+import com.github.khshourov.dsj.models.Word;
+import com.github.khshourov.dsj.processors.WordItemProcessor;
+import com.github.khshourov.dsj.readers.WordItemReader;
+import com.github.khshourov.dsj.writers.WordItemWriter;
 import java.util.Arrays;
 import javax.sql.DataSource;
 import org.springframework.batch.core.Job;

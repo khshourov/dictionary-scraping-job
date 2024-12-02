@@ -1,6 +1,6 @@
-package com.github.khshourov.dsj.jobs.readers;
+package com.github.khshourov.dsj.readers;
 
-import com.github.khshourov.dsj.jobs.models.Word;
+import com.github.khshourov.dsj.models.Word;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
