@@ -1,0 +1,9 @@
+pre-commit:
+  commands:
+    build:
+      run: ./gradlew build
+
+pre-push:
+  commands:
+    test:
+      run: ./gradlew test
