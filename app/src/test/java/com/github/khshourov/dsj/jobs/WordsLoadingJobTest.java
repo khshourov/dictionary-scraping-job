@@ -2,6 +2,7 @@ package com.github.khshourov.dsj.jobs;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.Instant;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
@@ -35,6 +36,7 @@ public class WordsLoadingJobTest {
         jobLauncher.run(
             job,
             new JobParametersBuilder()
+                .addString("timestamp", Instant.now().toString())
                 .addString("wordFiles", "com/github/khshourov/dsj/words/words-*.txt")
                 .addString("sources", "source1,source2")
                 .toJobParameters());
@@ -59,5 +61,16 @@ public class WordsLoadingJobTest {
         jdbcTemplate.queryForObject(
             "SELECT COUNT(DISTINCT word) FROM dictionary_words", Integer.class);
     assertEquals(20, uniqueWords);
+
+    jobExecution =
+        jobLauncher.run(
+            job,
+            new JobParametersBuilder()
+                .addString("timestamp", Instant.now().toString())
+                .addString("wordFiles", "com/github/khshourov/dsj/words/words-*.txt")
+                .addString("sources", "source1,source2")
+                .toJobParameters());
+    assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
+    assertEquals(40, jobExecution.getStepExecutions().stream().findFirst().get().getSkipCount());
   }
 }

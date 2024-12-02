@@ -3,6 +3,7 @@ package com.github.khshourov.dsj.jobs;
 import com.github.khshourov.dsj.db.datasource.EmbeddedDataSourceConfiguration;
 import com.github.khshourov.dsj.db.datasource.PersistentDataSourceConfiguration;
 import com.github.khshourov.dsj.jobs.models.Word;
+import com.github.khshourov.dsj.jobs.processors.WordItemProcessor;
 import com.github.khshourov.dsj.jobs.readers.WordItemReader;
 import com.github.khshourov.dsj.jobs.writers.WordItemWriter;
 import java.util.Arrays;
@@ -39,11 +40,16 @@ public class WordsLoadingJob {
       JobRepository jobRepository,
       JdbcTransactionManager transactionManager,
       WordItemReader itemReader,
+      WordItemProcessor itemProcessor,
       WordItemWriter itemWriter) {
     return new StepBuilder("wordsLoadingStep", jobRepository)
         .<Word, Word>chunk(100, transactionManager)
         .reader(itemReader)
+        .processor(itemProcessor)
         .writer(itemWriter)
+        .faultTolerant()
+        .skip(IllegalArgumentException.class)
+        .skipLimit(Integer.MAX_VALUE)
         .build();
   }
 
@@ -78,6 +84,14 @@ public class WordsLoadingJob {
         .name("delegateItemReader")
         .lineMapper((line, lineNumber) -> line)
         .build();
+  }
+
+  @Bean
+  public WordItemProcessor itemProcessor(DataSource dataSource) throws Exception {
+    WordItemProcessor itemProcessor = new WordItemProcessor();
+    itemProcessor.setDataSource(dataSource);
+    itemProcessor.afterPropertiesSet();
+    return itemProcessor;
   }
 
   @Bean
