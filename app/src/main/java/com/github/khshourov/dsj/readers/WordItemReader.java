@@ -1,6 +1,6 @@
 package com.github.khshourov.dsj.readers;
 
-import com.github.khshourov.dsj.models.Word;
+import com.github.khshourov.dsj.models.DictionaryWord;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -14,14 +14,14 @@ import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.beans.factory.InitializingBean;
 
-public class WordItemReader implements ItemReader<Word>, ItemStream, InitializingBean {
-  private final Queue<Word> buffer = new LinkedList<>();
+public class WordItemReader implements ItemReader<DictionaryWord>, ItemStream, InitializingBean {
+  private final Queue<DictionaryWord> buffer = new LinkedList<>();
 
   private MultiResourceItemReader<String> delegate;
   private List<String> sources;
 
   @Override
-  public Word read()
+  public DictionaryWord read()
       throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
     if (buffer.isEmpty()) {
       String line = this.delegate.read();
@@ -30,7 +30,7 @@ public class WordItemReader implements ItemReader<Word>, ItemStream, Initializin
       }
 
       for (String source : sources) {
-        buffer.add(new Word(source, line));
+        buffer.add(new DictionaryWord(source, line));
       }
     }
 

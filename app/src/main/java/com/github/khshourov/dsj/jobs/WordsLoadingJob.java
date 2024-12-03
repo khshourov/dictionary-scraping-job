@@ -2,7 +2,7 @@ package com.github.khshourov.dsj.jobs;
 
 import com.github.khshourov.dsj.db.datasource.EmbeddedDataSourceConfiguration;
 import com.github.khshourov.dsj.db.datasource.PersistentDataSourceConfiguration;
-import com.github.khshourov.dsj.models.Word;
+import com.github.khshourov.dsj.models.DictionaryWord;
 import com.github.khshourov.dsj.processors.WordItemProcessor;
 import com.github.khshourov.dsj.readers.WordItemReader;
 import com.github.khshourov.dsj.writers.WordItemWriter;
@@ -43,7 +43,7 @@ public class WordsLoadingJob {
       WordItemProcessor itemProcessor,
       WordItemWriter itemWriter) {
     return new StepBuilder("wordsLoadingStep", jobRepository)
-        .<Word, Word>chunk(100, transactionManager)
+        .<DictionaryWord, DictionaryWord>chunk(100, transactionManager)
         .reader(itemReader)
         .processor(itemProcessor)
         .writer(itemWriter)

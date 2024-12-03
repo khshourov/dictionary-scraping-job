@@ -1,6 +1,6 @@
 package com.github.khshourov.dsj.writers;
 
-import com.github.khshourov.dsj.models.Word;
+import com.github.khshourov.dsj.models.DictionaryWord;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ListIterator;
@@ -11,22 +11,22 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-public class WordItemWriter implements ItemWriter<Word>, InitializingBean {
+public class WordItemWriter implements ItemWriter<DictionaryWord>, InitializingBean {
   private static final String INSERT_WORD =
       "INSERT INTO dictionary_words(source, word) VALUES(?, ?)";
 
   private JdbcTemplate jdbcTemplate;
 
   @Override
-  public void write(Chunk<? extends Word> chunk) throws Exception {
-    final ListIterator<? extends Word> itemIterator = chunk.getItems().listIterator();
+  public void write(Chunk<? extends DictionaryWord> chunk) throws Exception {
+    final ListIterator<? extends DictionaryWord> itemIterator = chunk.getItems().listIterator();
 
     this.jdbcTemplate.batchUpdate(
         INSERT_WORD,
         new BatchPreparedStatementSetter() {
           @Override
           public void setValues(PreparedStatement ps, int i) throws SQLException {
-            Word entry = itemIterator.next();
+            DictionaryWord entry = itemIterator.next();
 
             ps.setString(1, entry.source());
             ps.setString(2, entry.word());
