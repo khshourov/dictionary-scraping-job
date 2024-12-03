@@ -15,8 +15,9 @@ public class WordItemProcessor implements ItemProcessor<Word, Word>, Initializin
   @Override
   public Word process(Word item) throws Exception {
     int exists =
-        this.jdbcTemplate.queryForObject(
-            CHECK_DUPLICATE, new String[] {item.source(), item.word()}, Integer.class);
+        this.jdbcTemplate
+            .query(CHECK_DUPLICATE, (rs, rowNum) -> rs.getInt(1), item.source(), item.word())
+            .getFirst();
     if (exists == 1) {
       throw new IllegalArgumentException(
           String.format("(%s, %s) is already exists", item.source(), item.word()));

@@ -15,7 +15,7 @@ import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.beans.factory.InitializingBean;
 
 public class WordItemReader implements ItemReader<Word>, ItemStream, InitializingBean {
-  private Queue<Word> buffer = new LinkedList<>();
+  private final Queue<Word> buffer = new LinkedList<>();
 
   private MultiResourceItemReader<String> delegate;
   private List<String> sources;

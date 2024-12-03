@@ -58,8 +58,10 @@ public class WordsLoadingJobTest {
     assertEquals(20, source2Entries);
 
     int uniqueWords =
-        jdbcTemplate.queryForObject(
-            "SELECT COUNT(DISTINCT word) FROM dictionary_words", Integer.class);
+        jdbcTemplate
+            .query(
+                "SELECT COUNT(DISTINCT word) FROM dictionary_words", (rs, rowNum) -> rs.getInt(1))
+            .getFirst();
     assertEquals(20, uniqueWords);
 
     jobExecution =
