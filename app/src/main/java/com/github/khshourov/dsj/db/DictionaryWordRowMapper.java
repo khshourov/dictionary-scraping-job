@@ -19,7 +19,7 @@ public class DictionaryWordRowMapper implements RowMapper<DictionaryWord> {
         rs.getString(COL_SOURCE),
         rs.getString(COL_WORD),
         rs.getString(COL_LEXICAL_ENTRY),
-        // [TODO] Handle invalid StatusType
+        // We enforce status check in database
         StatusType.valueOf(rs.getString(COL_STATUS)));
   }
 }
