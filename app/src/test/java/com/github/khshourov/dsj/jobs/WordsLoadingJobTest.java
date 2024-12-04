@@ -19,7 +19,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-public class WordsLoadingJobTest {
+class WordsLoadingJobTest {
   @Test
   void testJobLaunch()
       throws JobInstanceAlreadyCompleteException,
