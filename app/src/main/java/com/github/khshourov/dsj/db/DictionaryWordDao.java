@@ -7,7 +7,9 @@ public interface DictionaryWordDao {
     return false;
   }
 
-  default void setLexicalEntry(DictionaryWord dictionaryWord) {}
+  default boolean setLexicalEntry(DictionaryWord dictionaryWord) {
+    return false;
+  }
 
   default boolean updateStatus(DictionaryWord dictionaryWord, StatusType updatedStatus) {
     return false;

@@ -8,5 +8,5 @@ CREATE TABLE dictionary_words (
     updated_at TIMESTAMP NULL,
     CONSTRAINT PK_dictionary_words_id PRIMARY KEY (id),
     CONSTRAINT UQ_dictionary_words_source_word UNIQUE (source, word),
-    CONSTRAINT status_check CHECK (status IN ('CREATED', 'SCRAPING', 'SCRAPED'))
+    CONSTRAINT status_check CHECK (status IN ('CREATED', 'SCRAPING', 'SCRAPED', 'FAILED', 'NOT_FOUND'))
 );

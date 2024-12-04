@@ -6,10 +6,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class JdbcDictionaryWordDao implements DictionaryWordDao {
   private static final String UPDATE_STATUS_TO_PROCESSING =
-      "UPDATE dictionary_words SET status = ? WHERE id = ? AND (status = ? OR status = ?)";
+      "UPDATE dictionary_words SET status = ?, updated_at = NOW() "
+          + "WHERE id = ? AND (status = ? OR status = ?)";
   private static final String UPDATE_LEXICAL_ENTRY =
-      "UPDATE dictionary_words SET lexical_entry = ?, status = ? WHERE id = ? AND status = ?";
-  private static final String UPDATE_STATUS = "UPDATE dictionary_words SET status = ? WHERE id = ?";
+      "UPDATE dictionary_words SET lexical_entry = ?, status = ?, updated_at = NOW() "
+          + "WHERE id = ? AND status = ?";
+  private static final String UPDATE_STATUS =
+      "UPDATE dictionary_words SET status = ?, updated_at = NOW() WHERE id = ?";
 
   private JdbcTemplate jdbcTemplate;
 
@@ -26,13 +29,16 @@ public class JdbcDictionaryWordDao implements DictionaryWordDao {
   }
 
   @Override
-  public void setLexicalEntry(DictionaryWord dictionaryWord) {
-    this.jdbcTemplate.update(
-        UPDATE_LEXICAL_ENTRY,
-        dictionaryWord.lexicalEntry(),
-        dictionaryWord.status().name(),
-        dictionaryWord.id(),
-        StatusType.SCRAPING.name());
+  public boolean setLexicalEntry(DictionaryWord dictionaryWord) {
+    int updatedRowCount =
+        this.jdbcTemplate.update(
+            UPDATE_LEXICAL_ENTRY,
+            dictionaryWord.lexicalEntry(),
+            StatusType.SCRAPED.name(),
+            dictionaryWord.id(),
+            StatusType.SCRAPING.name());
+
+    return updatedRowCount == 1;
   }
 
   @Override

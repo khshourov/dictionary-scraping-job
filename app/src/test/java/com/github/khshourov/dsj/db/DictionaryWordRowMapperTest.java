@@ -25,11 +25,6 @@ class DictionaryWordRowMapperTest {
     this.jdbcTemplate = new JdbcTemplate(dataSource);
   }
 
-  @AfterEach
-  void cleanup() {
-    this.jdbcTemplate.update("DELETE FROM dictionary_words");
-  }
-
   @Test
   void mapperShouldMappedResultSetToDictionaryWord() {
     String insertValidDictionaryWord =
@@ -48,5 +43,11 @@ class DictionaryWordRowMapperTest {
     assertEquals("word", dictionaryWord.word());
     assertEquals("lexical_entry", dictionaryWord.lexicalEntry());
     assertEquals(StatusType.CREATED, dictionaryWord.status());
+  }
+
+  @AfterEach
+  void cleanup() {
+    // Without RESTART IDENTITY, auto incremented id wouldn't reset to 1
+    this.jdbcTemplate.execute("TRUNCATE TABLE dictionary_words RESTART IDENTITY");
   }
 }
