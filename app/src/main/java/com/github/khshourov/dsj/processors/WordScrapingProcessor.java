@@ -26,6 +26,8 @@ public class WordScrapingProcessor implements ItemProcessor<DictionaryWord, Dict
       }
       return new DictionaryWord(
           item.id(), item.source(), item.word(), (String) response, StatusType.SCRAPED);
+    } catch (NullPointerException e) {
+      throw e;
     } catch (Exception e) {
       throw new IllegalStateException(e.getMessage());
     }
@@ -33,5 +35,9 @@ public class WordScrapingProcessor implements ItemProcessor<DictionaryWord, Dict
 
   public void setDictionaryWordDao(DictionaryWordDao dictionaryWordDao) {
     this.dictionaryWordDao = dictionaryWordDao;
+  }
+
+  public void setScraper(Scraper scraper) {
+    this.scraper = scraper;
   }
 }
