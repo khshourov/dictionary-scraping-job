@@ -5,10 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.github.khshourov.dsj.db.DictionaryWordDao;
 import com.github.khshourov.dsj.db.StatusType;
 import com.github.khshourov.dsj.models.DictionaryWord;
+import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.concurrent.TimeoutException;
 
 public class WordScrapingStepListenerTest {
   private MockDictionaryWordDao dictionaryWordDao;
