@@ -6,6 +6,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import java.util.List;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,6 +22,15 @@ public class UtilsTest {
     for (int i = 0; i < partitionSize; i++) {
       assertArrayEquals(expected[i], partitions.get(i));
     }
+  }
+
+  @Test
+  void compressedStringShouldBeProducedForValidContent() {
+    String content = "content";
+
+    String compressedString = Utils.compress(content);
+
+    assertEquals("H4sIAAAAAAAA/0vOzytJzSsBAKkwxf4HAAAA", compressedString);
   }
 
   static Stream<Arguments> input() {

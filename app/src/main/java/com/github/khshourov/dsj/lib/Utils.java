@@ -1,7 +1,11 @@
 package com.github.khshourov.dsj.lib;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.zip.GZIPOutputStream;
 
 public class Utils {
 
@@ -30,5 +34,19 @@ public class Utils {
               return new int[] {start, end};
             })
         .toList();
+  }
+
+  public static String compress(String content) {
+    byte[] contentBytes = content.getBytes();
+
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    try (GZIPOutputStream writer = new GZIPOutputStream(outputStream, true)) {
+      writer.write(contentBytes);
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
+    }
+
+    byte[] compressedBytes = outputStream.toByteArray();
+    return Base64.getEncoder().encodeToString(compressedBytes);
   }
 }
