@@ -14,25 +14,25 @@ import org.springframework.batch.item.Chunk;
 class WordScrapingWriterTest {
   private MockDictionaryWordDao dictionaryWordDao;
   private WordScrapingWriter wordScrapingWriter;
-  private DictionaryWord word1;
-  private DictionaryWord word2;
 
   @BeforeEach
   void init() {
     this.dictionaryWordDao = new MockDictionaryWordDao();
     this.wordScrapingWriter = new WordScrapingWriter();
     this.wordScrapingWriter.setDictionaryWordDao(this.dictionaryWordDao);
-
-    this.word1 = new DictionaryWord(1L, "source", "word1", "lexical-entry1", StatusType.SCRAPED);
-    this.word2 = new DictionaryWord(2L, "source", "word2", "lexical-entry2", StatusType.SCRAPED);
   }
 
   @Test
   void scrapedWordsShouldBeSaved() throws Exception {
-    this.wordScrapingWriter.write(new Chunk<>(List.of(this.word1, this.word2)));
+    DictionaryWord word1 =
+        new DictionaryWord(1L, "source", "word1", "lexical-entry1", StatusType.SCRAPED);
+    DictionaryWord word2 =
+        new DictionaryWord(2L, "source", "word2", "lexical-entry2", StatusType.SCRAPED);
 
-    assertEquals(this.word1, this.dictionaryWordDao.getCalledWith().get(0));
-    assertEquals(this.word2, this.dictionaryWordDao.getCalledWith().get(1));
+    this.wordScrapingWriter.write(new Chunk<>(List.of(word1, word2)));
+
+    assertEquals(word1, this.dictionaryWordDao.getCalledWith().get(0));
+    assertEquals(word2, this.dictionaryWordDao.getCalledWith().get(1));
   }
 
   private static class MockDictionaryWordDao implements DictionaryWordDao {
