@@ -3,24 +3,15 @@ package com.github.khshourov.dsj.db;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.github.khshourov.dsj.db.datasource.EmbeddedDataSourceConfiguration;
+import com.github.khshourov.dsj.testlib.TruncateDictionaryWord;
 import java.util.Map;
 import java.util.stream.IntStream;
-import javax.sql.DataSource;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ContextConfiguration;
 
-@SpringBootTest
-@ContextConfiguration(classes = {EmbeddedDataSourceConfiguration.class})
-class WordPartitionerTest {
-  @Autowired private DataSource dataSource;
-  private JdbcTemplate jdbcTemplate;
+class WordPartitionerTest extends TruncateDictionaryWord {
   private WordPartitioner wordPartitioner;
 
   @BeforeEach
@@ -76,11 +67,5 @@ class WordPartitionerTest {
               assertEquals(expected[i][0], context.get("minId"));
               assertEquals(expected[i][1], context.get("maxId"));
             });
-  }
-
-  @AfterEach
-  void cleanup() {
-    // Without RESTART IDENTITY, auto incremented id wouldn't reset to 1
-    this.jdbcTemplate.execute("TRUNCATE TABLE dictionary_words RESTART IDENTITY");
   }
 }

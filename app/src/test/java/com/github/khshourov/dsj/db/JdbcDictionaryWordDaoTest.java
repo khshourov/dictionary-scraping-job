@@ -7,26 +7,17 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import com.github.khshourov.dsj.db.datasource.EmbeddedDataSourceConfiguration;
 import com.github.khshourov.dsj.models.DictionaryWord;
+import com.github.khshourov.dsj.testlib.TruncateDictionaryWord;
 import java.util.stream.Stream;
-import javax.sql.DataSource;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ContextConfiguration;
 
-@SpringBootTest
-@ContextConfiguration(classes = {EmbeddedDataSourceConfiguration.class})
-class JdbcDictionaryWordDaoTest {
-  @Autowired private DataSource dataSource;
-  private JdbcTemplate jdbcTemplate;
+class JdbcDictionaryWordDaoTest extends TruncateDictionaryWord {
   private JdbcDictionaryWordDao dictionaryWordDao;
   private DictionaryWord dictionaryWord;
 
@@ -170,11 +161,5 @@ class JdbcDictionaryWordDaoTest {
         arguments(StatusType.SCRAPED.name()),
         arguments(StatusType.SCRAPING.name()),
         arguments(StatusType.NOT_FOUND.name()));
-  }
-
-  @AfterEach
-  void cleanup() {
-    // Without RESTART IDENTITY, auto incremented id wouldn't reset to 1
-    this.jdbcTemplate.execute("TRUNCATE TABLE dictionary_words RESTART IDENTITY");
   }
 }

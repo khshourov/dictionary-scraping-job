@@ -2,24 +2,14 @@ package com.github.khshourov.dsj.db;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.github.khshourov.dsj.db.datasource.EmbeddedDataSourceConfiguration;
 import com.github.khshourov.dsj.models.DictionaryWord;
+import com.github.khshourov.dsj.testlib.TruncateDictionaryWord;
 import java.util.List;
-import javax.sql.DataSource;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ContextConfiguration;
 
-@SpringBootTest
-@ContextConfiguration(classes = {EmbeddedDataSourceConfiguration.class})
-class DictionaryWordRowMapperTest {
-  @Autowired private DataSource dataSource;
-  private JdbcTemplate jdbcTemplate;
-
+class DictionaryWordRowMapperTest extends TruncateDictionaryWord {
   @BeforeEach
   void init() {
     this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -43,11 +33,5 @@ class DictionaryWordRowMapperTest {
     assertEquals("word", dictionaryWord.word());
     assertEquals("lexical_entry", dictionaryWord.lexicalEntry());
     assertEquals(StatusType.CREATED, dictionaryWord.status());
-  }
-
-  @AfterEach
-  void cleanup() {
-    // Without RESTART IDENTITY, auto incremented id wouldn't reset to 1
-    this.jdbcTemplate.execute("TRUNCATE TABLE dictionary_words RESTART IDENTITY");
   }
 }
