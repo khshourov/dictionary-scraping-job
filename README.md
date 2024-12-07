@@ -1,1 +1,1 @@
-# dictionary-scrapping-job
+# dictionary-scraping-job
