@@ -2,7 +2,6 @@ package com.github.khshourov.dsj.jobs;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
@@ -18,7 +17,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 class WordsScrapingJobTest {
   @Test
-  @Disabled
   void testLaunchJob()
       throws JobInstanceAlreadyCompleteException,
           JobExecutionAlreadyRunningException,

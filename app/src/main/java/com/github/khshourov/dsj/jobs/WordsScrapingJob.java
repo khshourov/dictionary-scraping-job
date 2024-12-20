@@ -9,6 +9,8 @@ import com.github.khshourov.dsj.db.datasource.PersistentDataSourceConfiguration;
 import com.github.khshourov.dsj.listeners.WordScrapingStepListener;
 import com.github.khshourov.dsj.models.DictionaryWord;
 import com.github.khshourov.dsj.processors.WordScrapingProcessor;
+import com.github.khshourov.dsj.scraper.DefaultScraper;
+import com.github.khshourov.dsj.scraper.Scraper;
 import com.github.khshourov.dsj.writers.WordScrapingWriter;
 import java.util.Map;
 import javax.sql.DataSource;
@@ -91,8 +93,10 @@ public class WordsScrapingJob {
     queryProvider.setFromClause("dictionary_words");
     queryProvider.setWhereClause(
         "(id >= :minId AND id <= :maxId) AND (status = :createdStatus OR status = :failedStatus)");
+    queryProvider.setSortKey("id");
 
     return new JdbcPagingItemReaderBuilder<DictionaryWord>()
+        .name("wordJdbcPagingItemReader")
         .dataSource(dataSource)
         .rowMapper(new DictionaryWordRowMapper())
         .queryProvider(queryProvider.getObject())
@@ -110,9 +114,11 @@ public class WordsScrapingJob {
   }
 
   @Bean
-  public WordScrapingProcessor wordScrapingProcessor(JdbcDictionaryWordDao dictionaryWordDao) {
+  public WordScrapingProcessor wordScrapingProcessor(
+      JdbcDictionaryWordDao dictionaryWordDao, Scraper scraper) {
     WordScrapingProcessor processor = new WordScrapingProcessor();
     processor.setDictionaryWordDao(dictionaryWordDao);
+    processor.setScraper(scraper);
     return processor;
   }
 
@@ -138,5 +144,10 @@ public class WordsScrapingJob {
     JdbcDictionaryWordDao dictionaryWordDao = new JdbcDictionaryWordDao();
     dictionaryWordDao.setDataSource(dataSource);
     return dictionaryWordDao;
+  }
+
+  @Bean
+  public Scraper scraper() {
+    return new DefaultScraper();
   }
 }

@@ -37,6 +37,9 @@ dependencies {
     // PostgresSQL driver
     implementation libs.postgresql
 
+    // To scrape online dictionary pages
+    implementation libs.dictionary.scraper
+
     // Testing
     testImplementation libs.spring.starter.test
     testImplementation libs.spring.batch.test
