@@ -4,6 +4,7 @@ import com.github.khshourov.dsj.db.DictionaryWordDao;
 import com.github.khshourov.dsj.db.StatusType;
 import com.github.khshourov.dsj.models.DictionaryWord;
 import com.github.khshourov.dsj.scraper.Scraper;
+import java.util.Optional;
 import org.springframework.batch.item.ItemProcessor;
 
 public class WordScrapingProcessor implements ItemProcessor<DictionaryWord, DictionaryWord> {
@@ -19,13 +20,13 @@ public class WordScrapingProcessor implements ItemProcessor<DictionaryWord, Dict
     }
 
     try {
-      Object response = scraper.scrape(item.word(), item.source());
-      if (response == null) {
+      Optional<String> response = scraper.scrape(item.word(), item.source());
+      if (response.isEmpty()) {
         throw new NullPointerException(
             String.format("%s not found in %s", item.word(), item.source()));
       }
       return new DictionaryWord(
-          item.id(), item.source(), item.word(), (String) response, StatusType.SCRAPED);
+          item.id(), item.source(), item.word(), response.get(), StatusType.SCRAPED);
     } catch (NullPointerException e) {
       throw e;
     } catch (Exception e) {

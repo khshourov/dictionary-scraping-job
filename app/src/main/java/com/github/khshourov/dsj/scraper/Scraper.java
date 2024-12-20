@@ -1,5 +1,7 @@
 package com.github.khshourov.dsj.scraper;
 
+import java.util.Optional;
+
 public interface Scraper {
-  Object scrape(String word, String source);
+  Optional<String> scrape(String word, String source);
 }

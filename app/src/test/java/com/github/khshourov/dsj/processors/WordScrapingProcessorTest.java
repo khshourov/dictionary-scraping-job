@@ -9,6 +9,7 @@ import com.github.khshourov.dsj.models.DictionaryWord;
 import com.github.khshourov.dsj.scraper.Scraper;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -86,12 +87,12 @@ class WordScrapingProcessorTest {
   }
 
   private static class MockScraper implements Scraper {
-    private Object response;
+    private String response;
     private Throwable throwable;
     private List<String> calledWith = new ArrayList<>();
 
     @Override
-    public Object scrape(String word, String source) {
+    public Optional<String> scrape(String word, String source) {
       if (this.throwable != null) {
         throw new RuntimeException(this.throwable.getMessage());
       }
@@ -99,10 +100,10 @@ class WordScrapingProcessorTest {
       this.calledWith.add(word);
       this.calledWith.add(source);
 
-      return this.response;
+      return Optional.ofNullable(this.response);
     }
 
-    public void setResponse(Object response) {
+    public void setResponse(String response) {
       this.response = response;
     }
 
