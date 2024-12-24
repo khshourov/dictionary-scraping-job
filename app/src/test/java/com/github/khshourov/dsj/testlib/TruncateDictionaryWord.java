@@ -8,6 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 
+/**
+ * The TruncateDictionaryWord class truncates the dictionary_words table after each test and resets
+ * the id.
+ */
 @SpringBootTest
 @ContextConfiguration(classes = {EmbeddedDataSourceConfiguration.class})
 public class TruncateDictionaryWord {

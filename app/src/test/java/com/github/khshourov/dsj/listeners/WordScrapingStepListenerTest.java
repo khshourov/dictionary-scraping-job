@@ -9,7 +9,7 @@ import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class WordScrapingStepListenerTest {
+class WordScrapingStepListenerTest {
   private MockDictionaryWordDao dictionaryWordDao;
   private WordScrapingStepListener listener;
   private DictionaryWord dictionaryWord;
