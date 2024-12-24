@@ -37,12 +37,12 @@ import org.springframework.jdbc.support.JdbcTransactionManager;
 @Import({PersistentDataSourceConfiguration.class, EmbeddedDataSourceConfiguration.class})
 public class WordsScrapingJob {
   @Bean
-  public Job job(JobRepository jobRepository, Step partitionStep) {
+  Job job(JobRepository jobRepository, Step partitionStep) {
     return new JobBuilder("wordsScrapingJob", jobRepository).start(partitionStep).build();
   }
 
   @Bean
-  public Step partitionStep(
+  Step partitionStep(
       JobRepository jobRepository, Partitioner wordPartitioner, Step wordScrapingStep) {
     return new StepBuilder("partitionStep", jobRepository)
         .partitioner("wordPartitioner", wordPartitioner)
@@ -53,7 +53,7 @@ public class WordsScrapingJob {
   }
 
   @Bean
-  public Partitioner wordPartitioner(DataSource dataSource) throws Exception {
+  Partitioner wordPartitioner(DataSource dataSource) throws Exception {
     WordPartitioner partitioner = new WordPartitioner();
     partitioner.setDataSource(dataSource);
     partitioner.afterPropertiesSet();
@@ -61,7 +61,7 @@ public class WordsScrapingJob {
   }
 
   @Bean
-  public Step wordScrapingStep(
+  Step wordScrapingStep(
       JobRepository jobRepository,
       JdbcTransactionManager transactionManager,
       JdbcPagingItemReader<DictionaryWord> wordJdbcPagingItemReader,
@@ -82,7 +82,7 @@ public class WordsScrapingJob {
 
   @Bean
   @StepScope
-  public JdbcPagingItemReader<DictionaryWord> wordJdbcPagingItemReader(
+  JdbcPagingItemReader<DictionaryWord> wordJdbcPagingItemReader(
       @Value("#{stepExecutionContext['minId']}") Integer minId,
       @Value("#{stepExecutionContext['maxId']}") Integer maxId,
       DataSource dataSource)
@@ -114,7 +114,7 @@ public class WordsScrapingJob {
   }
 
   @Bean
-  public WordScrapingProcessor wordScrapingProcessor(
+  WordScrapingProcessor wordScrapingProcessor(
       JdbcDictionaryWordDao dictionaryWordDao, Scraper scraper) {
     WordScrapingProcessor processor = new WordScrapingProcessor();
     processor.setDictionaryWordDao(dictionaryWordDao);
@@ -123,8 +123,7 @@ public class WordsScrapingJob {
   }
 
   @Bean
-  public WordScrapingWriter wordScrapingWriter(JdbcDictionaryWordDao dictionaryWordDao)
-      throws Exception {
+  WordScrapingWriter wordScrapingWriter(JdbcDictionaryWordDao dictionaryWordDao) throws Exception {
     WordScrapingWriter writer = new WordScrapingWriter();
     writer.setDictionaryWordDao(dictionaryWordDao);
     writer.afterPropertiesSet();
@@ -132,22 +131,21 @@ public class WordsScrapingJob {
   }
 
   @Bean
-  public WordScrapingStepListener wordScrapingStepListener(
-      JdbcDictionaryWordDao dictionaryWordDao) {
+  WordScrapingStepListener wordScrapingStepListener(JdbcDictionaryWordDao dictionaryWordDao) {
     WordScrapingStepListener listener = new WordScrapingStepListener();
     listener.setDictionaryWordDao(dictionaryWordDao);
     return listener;
   }
 
   @Bean
-  public JdbcDictionaryWordDao dictionaryWordDao(DataSource dataSource) {
+  JdbcDictionaryWordDao dictionaryWordDao(DataSource dataSource) {
     JdbcDictionaryWordDao dictionaryWordDao = new JdbcDictionaryWordDao();
     dictionaryWordDao.setDataSource(dataSource);
     return dictionaryWordDao;
   }
 
   @Bean
-  public Scraper scraper() {
+  Scraper scraper() {
     return new DefaultScraper();
   }
 }

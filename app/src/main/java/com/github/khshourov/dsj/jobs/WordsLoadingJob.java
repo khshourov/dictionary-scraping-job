@@ -31,12 +31,12 @@ import org.springframework.jdbc.support.JdbcTransactionManager;
 @Import({PersistentDataSourceConfiguration.class, EmbeddedDataSourceConfiguration.class})
 public class WordsLoadingJob {
   @Bean
-  public Job job(JobRepository jobRepository, Step wordsLoadingStep) {
+  Job job(JobRepository jobRepository, Step wordsLoadingStep) {
     return new JobBuilder("wordsLoadingJob", jobRepository).start(wordsLoadingStep).build();
   }
 
   @Bean
-  public Step wordsLoadingStep(
+  Step wordsLoadingStep(
       JobRepository jobRepository,
       JdbcTransactionManager transactionManager,
       WordItemReader itemReader,
@@ -55,7 +55,7 @@ public class WordsLoadingJob {
 
   @Bean
   @StepScope
-  public WordItemReader itemReader(
+  WordItemReader itemReader(
       @Value("#{jobParameters['sources']}") String sources,
       MultiResourceItemReader<String> delegateItemReader)
       throws Exception {
@@ -68,7 +68,7 @@ public class WordsLoadingJob {
 
   @Bean
   @StepScope
-  public MultiResourceItemReader<String> delegateItemReader(
+  MultiResourceItemReader<String> delegateItemReader(
       @Value("#{jobParameters['wordFiles']}") Resource[] resources,
       FlatFileItemReader<String> flatFileItemReader) {
     return new MultiResourceItemReaderBuilder<String>()
@@ -79,7 +79,7 @@ public class WordsLoadingJob {
   }
 
   @Bean
-  public FlatFileItemReader<String> flatFileItemReader() {
+  FlatFileItemReader<String> flatFileItemReader() {
     return new FlatFileItemReaderBuilder<String>()
         .name("delegateItemReader")
         .lineMapper((line, lineNumber) -> line)
@@ -87,7 +87,7 @@ public class WordsLoadingJob {
   }
 
   @Bean
-  public WordItemProcessor itemProcessor(DataSource dataSource) throws Exception {
+  WordItemProcessor itemProcessor(DataSource dataSource) throws Exception {
     WordItemProcessor itemProcessor = new WordItemProcessor();
     itemProcessor.setDataSource(dataSource);
     itemProcessor.afterPropertiesSet();
@@ -95,7 +95,7 @@ public class WordsLoadingJob {
   }
 
   @Bean
-  public WordItemWriter itemWriter(DataSource dataSource) throws Exception {
+  WordItemWriter itemWriter(DataSource dataSource) throws Exception {
     WordItemWriter itemWriter = new WordItemWriter();
     itemWriter.setDataSource(dataSource);
     itemWriter.afterPropertiesSet();
