@@ -15,10 +15,6 @@ public class Utils {
   }
 
   public static List<int[]> createPartitions(int minValue, int maxValue, int partitionSize) {
-    if (minValue == maxValue) {
-      return IntStream.range(0, partitionSize).mapToObj(i -> new int[] {0, 0}).toList();
-    }
-
     // We could've swap minValue and maxValue if minValue is greater than maxValue
     // But compiler complains:
     // "Variable used in lambda expression should be final or effectively final"
@@ -31,6 +27,10 @@ public class Utils {
               int step = Math.ceilDiv((max - min + 1), partitionSize);
               int start = min + i * step;
               int end = Math.min(max, (start + step - 1));
+              if (end < start) {
+                return new int[] {0, 0};
+              }
+
               return new int[] {start, end};
             })
         .toList();

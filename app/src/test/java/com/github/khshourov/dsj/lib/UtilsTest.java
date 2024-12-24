@@ -59,6 +59,8 @@ public class UtilsTest {
             }),
         arguments(1, 5, 1, new int[][] {{1, 5}}),
         arguments(0, 0, 5, new int[][] {{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}}),
-        arguments(10, 1, 2, new int[][] {{1, 5}, {6, 10}}));
+        arguments(10, 1, 2, new int[][] {{1, 5}, {6, 10}}),
+        arguments(1, 1, 2, new int[][] {{1, 1}, {0, 0}}),
+        arguments(1, 3, 5, new int[][] {{1, 1}, {2, 2}, {3, 3}, {0, 0}, {0, 0}}));
   }
 }
