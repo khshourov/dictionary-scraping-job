@@ -25,3 +25,6 @@ build
 
 # Ignore .idea directory
 .idea
+
+# Ignore .env as it may contain sensitive info
+.env

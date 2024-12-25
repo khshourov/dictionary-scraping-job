@@ -37,7 +37,7 @@ import org.springframework.jdbc.support.JdbcTransactionManager;
 @Import({PersistentDataSourceConfiguration.class, EmbeddedDataSourceConfiguration.class})
 public class WordsScrapingJob {
   @Bean
-  Job job(JobRepository jobRepository, Step partitionStep) {
+  Job scrapingJob(JobRepository jobRepository, Step partitionStep) {
     return new JobBuilder("wordsScrapingJob", jobRepository).start(partitionStep).build();
   }
 
